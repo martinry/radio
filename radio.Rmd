@@ -1,0 +1,108 @@
+---
+title: "Similarity, uniqueness of Swedish radio stations"
+author: "Martin Rydén"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(data.table)
+library(dplyr)
+
+```
+
+See **radio.R** for full script including data scraping. Presented data is from past 7 days (July 1st).
+
+```{r, echo = F}
+combined <- fread("combined.csv")
+```
+
+## How many songs were played?
+#### Total number of songs (including duplicates) played between 2021-06-25 and 2021-07-01
+
+```{r, echo = F}
+count_by_station <- combined[, .N, by = "Station"]
+names(count_by_station) <- c("Station", "Number of songs")
+count_by_station[order(`Number of songs`, decreasing = T)] %>% knitr::kable()
+```
+
+## Uniqueness
+#### Percentage of unique songs (within stations) -- low % means high repetitiveness
+
+```{r, echo = F}
+unique_by_station <- unique(combined, by = c("Station", "Song"))
+
+unique_by_station <- unique_by_station[, .N, by = "Station"]
+
+unique_by_station$Total <- count_by_station$N
+
+unique_by_station$Ratio <- round(unique_by_station$N/unique_by_station$Total * 100)
+
+names(unique_by_station) <- c("Station", "Unique songs", "All songs", "% unique")
+
+unique_by_station[order(`% unique`, decreasing = T)] %>% knitr::kable()
+```
+
+## Similarity
+#### What radio stations played the same songs the most?
+
+```{r, echo = F, fig.cap = "Counts of same song being played between sets of stations, highest degree of similarity between P3 and P4."}
+
+# Group songs by Station
+songs_by_group <- combined[,list(list(unique(Station))), by="Song"]
+
+# Which songs have been played by more than one station?
+songs_by_group <- songs_by_group[lengths(songs_by_group$V1) > 1]
+
+dt = rbindlist(
+	lapply(songs_by_group$V1, function(x) data.table(t(x))),
+	fill = TRUE
+)
+
+combs <- t(combn(sort(na.omit(unique(unlist(dt)))), 2))
+freqs <- apply(combs, 1, function(C) {
+	sum(apply(dt, 1, function(a) all(C %in% a, na.rm = TRUE)))
+})
+combsDF <- as.data.frame(combs)
+combsDF$freq <- freqs
+
+combsnew <- data.table(paste0(combsDF$V1, " - ", combsDF$V2), combsDF$freq)
+
+combsnew$setby <- combsDF$V1
+
+library(ggplot2)
+library(ggthemes)
+library(RColorBrewer)
+
+ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
+	scale_fill_manual(values = brewer.pal(n = 8, name = "Pastel2"), name = "") +
+	xlab("Stations") + ylab("# times played same song (i.e. similarity)") +
+	coord_flip() +
+	geom_bar(stat = "identity") +
+	ggthemes::theme_few()
+
+```
+
+
+
+## Similarity heatmap
+
+```{r, echo = F, message = F, warnings = F, error = F, results = "hide", message = "F", fig.show="hold", out.width="40%", fig.cap = "Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity."}
+
+library(pheatmap)
+
+M <- reshape2::dcast(combsDF, V2~V1, value.var="freq")
+
+rownames(M) <- M$V2
+M <- M[, 2:ncol(M)]
+
+M <- M[ , order(names(M))]
+M <- M[order(rownames(M)),]
+
+pheatmap(M, cluster_rows=F, cluster_cols=F, na_col="white", main = "Raw counts")
+pheatmap(log10(M), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
+pheatmap(scale(M, center = T, scale = F), cluster_rows=F, cluster_cols=F, na_col="white", main = "Centered counts")
+
+
+```
