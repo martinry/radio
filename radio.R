@@ -6,6 +6,8 @@ library(dplyr)
 library(xml2)
 library(rvest)
 
+# Fetch from onlineradiobox.com
+
 stations <- c("banditrock", "rix", "lugnafavoriter", "mixmegapol", "rockklassiker", "nrj")
 
 get_url <- function(x, i) {
@@ -36,14 +38,11 @@ for(m in stations){
 
 names(combined) <- c("Station", "Song")
 
-
-
-# SR ----
-
-# Din Gata
+# Fetch from sverigesradio.se
 
 dates <- c("2021-07-01", "2021-06-30", "2021-06-29", "2021-06-28", "2021-06-27", "2021-06-26", "2021-06-25")
 
+# programid:
 # Din Gata: 2576
 # P3:		164
 # P4:		207
@@ -81,9 +80,6 @@ for(m in programid) {
 	}
 }
 
-
-uniqueN(combined$Song)
-
 # Clean up
 
 to_remove <- c("STOP AD BREAK", "AIS AD BREAK", "ADBREAK INSERT")
@@ -105,8 +101,10 @@ combined[Station == "banditrock"]$Song <- combined[Station == "banditrock"]$Song
 
 combined$Song <- tolower(combined$Song)
 
-fwrite(combined, file = "combined.csv")
+# Write to file ----
+# fwrite(combined, file = "combined.csv")
 
+# Analysis ----
 count_by_station <- combined[, .N, by = "Station"]
 
 # Station    N
@@ -128,7 +126,6 @@ unique_by_station$Total <- count_by_station$N
 
 # Ratio = percent unique songs i.e. measure of uniqueness
 unique_by_station$Ratio <- unique_by_station$N/unique_by_station$Total * 100
-
 
 # Group songs by Station
 songs_by_group <- combined[,list(list(unique(Station))), by="Song"]
