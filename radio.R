@@ -44,9 +44,10 @@ dates <- c("2021-07-01", "2021-06-30", "2021-06-29", "2021-06-28", "2021-06-27",
 
 # programid:
 # Din Gata: 2576
+# P2:		2562
 # P3:		164
 # P4:		207
-programid <- c("2576", "164", "207")
+programid <- c("2576", "2562", "164", "207")
 
 get_url <- function(x, i) {
 	paste0("https://sverigesradio.se/latlista.aspx?programid=", x, "&date=", i)
@@ -59,20 +60,20 @@ get_table <- function(wurl) {
 		xml_contents() %>% as.character() %>% trimws() -> songs
 }
 
-
-	
-tab <- get_url(programid[1], dates[1]) %>% get_table()
-
 for(m in programid) {
 	for(i in dates) {
 		tab <- get_url(m, i) %>% get_table()
 		if(m == "2576") {
 			tab <- data.table(rep("Din Gata", length(tab)), tab)
+			} else if(m == "2562") {
+				tab <- data.table(rep("P2", length(tab)), tab)
 			} else if(m == "164") {
 				tab <- data.table(rep("P3", length(tab)), tab)
 			} else if(m == "207") {
 				tab <- data.table(rep("P4", length(tab)), tab)
 			}
+		
+		
 		
 		names(tab) <- c("Station", "Song")
 		
@@ -95,6 +96,7 @@ combined[Station == "rix"]$Song <- combined[Station == "rix"]$Song %>% sub(".* -
 combined[Station == "lugnafavoriter"]$Song <- combined[Station == "lugnafavoriter"]$Song %>% sub(".* - ", "", .)
 combined[Station == "mixmegapol"]$Song <- combined[Station == "mixmegapol"]$Song %>% sub(".* - ", "", .)
 combined[Station == "Din Gata"]$Song <- combined[Station == "Din Gata"]$Song %>% sub(".* - ", "", .)
+combined[Station == "P2"]$Song <- combined[Station == "P2"]$Song %>% sub(".* - ", "", .)
 combined[Station == "P3"]$Song <- combined[Station == "P3"]$Song %>% sub(".* - ", "", .)
 combined[Station == "P4"]$Song <- combined[Station == "P4"]$Song %>% sub(".* - ", "", .)
 combined[Station == "banditrock"]$Song <- combined[Station == "banditrock"]$Song %>% sub(".* - ", "", .)
@@ -107,16 +109,17 @@ combined$Song <- tolower(combined$Song)
 # Analysis ----
 count_by_station <- combined[, .N, by = "Station"]
 
-# Station    N
-# 1:     banditrock 2135
-# 2:            rix 2519
-# 3: lugnafavoriter 2478
-# 4:     mixmegapol 2539
-# 5:  rockklassiker 1976
-# 6:            nrj 1986
-# 7:       Din Gata 2906
-# 8:             P3 1977
-# 9:             P4 1434
+# 		   Station    N
+# 1:     banditrock 2205
+# 2:            rix 2599
+# 3: lugnafavoriter 2545
+# 4:     mixmegapol 2615
+# 5:  rockklassiker 2038
+# 6:            nrj 2054
+# 7:       Din Gata 2999
+# 8:             P2 1130
+# 9:             P3 2044
+# 10:             P4 1468
 
 unique_by_station <- unique(combined, by = c("Station", "Song"))
 
@@ -155,7 +158,7 @@ library(ggthemes)
 library(RColorBrewer)
 
 ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
-	scale_fill_manual(values = brewer.pal(n = 8, name = "Pastel2"), name = "") +
+	scale_fill_manual(values = brewer.pal(n = 9, name = "Pastel1"), name = "") +
 	xlab("Stations") + ylab("# times played same song (i.e. similarity)") +
 	coord_flip() +
 	geom_bar(stat = "identity") +
@@ -163,7 +166,7 @@ ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
 
 library(pheatmap)
 
-M <- dcast(combsDF, V2~V1, value.var="freq")
+M <- reshape2::dcast(combsDF, V2~V1, value.var="freq")
 
 rownames(M) <- M$V2
 M <- M[, 2:ncol(M)]
@@ -172,7 +175,7 @@ M <- M[ , order(names(M))]
 M <- M[order(rownames(M)),]
 
 pheatmap(M, cluster_rows=F, cluster_cols=F, na_col="white", main = "Raw counts")
-pheatmap(log10(M), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
+pheatmap(log10(M+1e-2), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
 pheatmap(scale(M, center = T, scale = F), cluster_rows=F, cluster_cols=F, na_col="white", main = "Centered counts")
 
 

@@ -47,7 +47,7 @@ unique_by_station[order(`% unique`, decreasing = T)] %>% knitr::kable()
 ## Similarity
 #### What radio stations played the same songs the most?
 
-```{r, echo = F, fig.cap = "Counts of same song being played between sets of stations, highest degree of similarity between P3 and P4."}
+```{r, echo = F, fig.width=8, fig.height=9, fig.cap = "Counts of same song being played between sets of stations, highest degree of similarity between P3 and P4."}
 
 # Group songs by Station
 songs_by_group <- combined[,list(list(unique(Station))), by="Song"]
@@ -76,11 +76,12 @@ library(ggthemes)
 library(RColorBrewer)
 
 ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
-	scale_fill_manual(values = brewer.pal(n = 8, name = "Pastel2"), name = "") +
+	scale_fill_manual(values = brewer.pal(n = 9, name = "Pastel1"), name = "") +
 	xlab("Stations") + ylab("# times played same song (i.e. similarity)") +
 	coord_flip() +
 	geom_bar(stat = "identity") +
-	ggthemes::theme_few()
+	ggthemes::theme_few(base_size = 14)
+	
 
 ```
 
@@ -101,7 +102,7 @@ M <- M[ , order(names(M))]
 M <- M[order(rownames(M)),]
 
 pheatmap(M, cluster_rows=F, cluster_cols=F, na_col="white", main = "Raw counts")
-pheatmap(log10(M), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
+pheatmap(log10(M+1e-2), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
 pheatmap(scale(M, center = T, scale = F), cluster_rows=F, cluster_cols=F, na_col="white", main = "Centered counts")
 
 
