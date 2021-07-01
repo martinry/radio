@@ -102,7 +102,7 @@ combined[Station == "banditrock"]$Song <- combined[Station == "banditrock"]$Song
 combined$Song <- tolower(combined$Song)
 
 # Write to file ----
-# fwrite(combined, file = "combined.csv")
+# fwrite(combined, file = "data/combined.csv")
 
 # Analysis ----
 count_by_station <- combined[, .N, by = "Station"]

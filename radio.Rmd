@@ -15,7 +15,7 @@ library(dplyr)
 See **radio.R** for full script including data scraping. Presented data is from past 7 days (July 1st).
 
 ```{r, echo = F}
-combined <- fread("combined.csv")
+combined <- fread("data/combined.csv")
 ```
 
 ## How many songs were played?
