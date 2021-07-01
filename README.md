@@ -12,15 +12,16 @@ is from past 7 days (July
 
 | Station        | Number of songs |
 | :------------- | --------------: |
-| Din Gata       |            2956 |
-| mixmegapol     |            2580 |
-| rix            |            2561 |
-| lugnafavoriter |            2509 |
-| banditrock     |            2174 |
-| nrj            |            2019 |
-| rockklassiker  |            2010 |
-| P3             |            2010 |
-| P4             |            1457 |
+| Din Gata       |            2999 |
+| mixmegapol     |            2615 |
+| rix            |            2599 |
+| lugnafavoriter |            2545 |
+| banditrock     |            2205 |
+| nrj            |            2054 |
+| P3             |            2044 |
+| rockklassiker  |            2038 |
+| P4             |            1468 |
+| P2             |            1130 |
 
 ## Uniqueness
 
@@ -28,15 +29,16 @@ is from past 7 days (July
 
 | Station        | Unique songs | All songs | % unique |
 | :------------- | -----------: | --------: | -------: |
-| P4             |          996 |      1457 |       68 |
-| P3             |         1088 |      2010 |       54 |
-| rockklassiker  |          518 |      2010 |       26 |
-| Din Gata       |          714 |      2956 |       24 |
-| banditrock     |          508 |      2174 |       23 |
-| nrj            |          385 |      2019 |       19 |
-| mixmegapol     |          375 |      2580 |       15 |
-| lugnafavoriter |          346 |      2509 |       14 |
-| rix            |          292 |      2561 |       11 |
+| P2             |         1068 |      1130 |       95 |
+| P4             |          999 |      1468 |       68 |
+| P3             |         1108 |      2044 |       54 |
+| rockklassiker  |          521 |      2038 |       26 |
+| Din Gata       |          717 |      2999 |       24 |
+| banditrock     |          509 |      2205 |       23 |
+| nrj            |          385 |      2054 |       19 |
+| lugnafavoriter |          346 |      2545 |       14 |
+| mixmegapol     |          375 |      2615 |       14 |
+| rix            |          293 |      2599 |       11 |
 
 ## Similarity
 
