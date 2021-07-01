@@ -102,7 +102,7 @@ M <- M[ , order(names(M))]
 M <- M[order(rownames(M)),]
 
 pheatmap(M, cluster_rows=F, cluster_cols=F, na_col="white", main = "Raw counts")
-pheatmap(log10(M+1e-2), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
+pheatmap(log10(M+1), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
 pheatmap(scale(M, center = T, scale = F), cluster_rows=F, cluster_cols=F, na_col="white", main = "Centered counts")
 
 
