@@ -211,5 +211,4 @@ joy_plot(c("P3", "Din Gata"))
 joy_plot(c("NRJ", "RixFM"))
 joy_plot(c("Rockklassiker", "Bandit Rock"))
 joy_plot(c("Lugna Favoriter", "NRJ", "P4", "Mix Megapol"))
-	
-	
+joy_plot("P2")

@@ -143,10 +143,29 @@ joy_plot <- function(stations) {
 		facet_grid(~ Station)
 }
 
+```
+
+#### Pop, miscellaneous
+```{r, echo = F, fig.show="hold", out.width="50%"}
+
 joy_plot(c("P3", "P4", "NRJ", "RixFM", "Mix Megapol"))
 joy_plot(c("P3", "Din Gata"))
 joy_plot(c("NRJ", "RixFM"))
-joy_plot(c("Rockklassiker", "Bandit Rock"))
 joy_plot(c("Lugna Favoriter", "NRJ", "P4", "Mix Megapol"))
+
+```
+
+#### Classical
+
+```{r, echo = F}
+
+joy_plot("P2")
+
+```
+
+#### Rock
+
+```{r, echo = F}
+joy_plot(c("Rockklassiker", "Bandit Rock"))
 
 ```
