@@ -2,7 +2,7 @@ Similarity, uniqueness of Swedish radio stations
 ================
 Martin Rydén
 
-Last updated on: 2021-07-02 17:19:10
+Last updated on: 2021-07-02 17:26:18
 
 See **radio.R** for full script including data scraping. Presented data
 is from past 7 days (July 2nd). Song identity is assumed based on name -
@@ -17,18 +17,18 @@ used.
 
 | Station         | Number of songs |
 | :-------------- | --------------: |
-| Din Gata        |            5800 |
-| P3              |            3902 |
-| P4              |            2714 |
-| Mix Megapol     |            2534 |
-| Rix FM          |            2503 |
-| Lugna Favoriter |            2490 |
-| Retro FM        |            2355 |
-| Bandit Rock     |            2150 |
-| P2              |            2078 |
-| NRJ             |            2055 |
-| Rockklassiker   |            1971 |
-| Pirate Rock     |            1948 |
+| Din Gata        |            5868 |
+| P3              |            3908 |
+| P4              |            2720 |
+| Mix Megapol     |            2537 |
+| Rix FM          |            2507 |
+| Lugna Favoriter |            2494 |
+| Retro FM        |            2357 |
+| Bandit Rock     |            2152 |
+| P2              |            2086 |
+| NRJ             |            2057 |
+| Rockklassiker   |            1972 |
+| Pirate Rock     |            1904 |
 
 ## Uniqueness
 
@@ -36,18 +36,18 @@ used.
 
 | Station         | Unique songs | All songs | % unique |
 | :-------------- | -----------: | --------: | -------: |
-| P2              |          985 |      2078 |       47 |
-| Pirate Rock     |          873 |      1948 |       45 |
-| Retro FM        |          971 |      2355 |       41 |
-| P4              |          928 |      2714 |       34 |
-| Rockklassiker   |          526 |      1971 |       27 |
-| P3              |         1058 |      3902 |       27 |
-| Bandit Rock     |          508 |      2150 |       24 |
-| NRJ             |          378 |      2055 |       18 |
-| Mix Megapol     |          372 |      2534 |       15 |
-| Lugna Favoriter |          346 |      2490 |       14 |
-| Din Gata        |          699 |      5800 |       12 |
-| Rix FM          |          279 |      2503 |       11 |
+| P2              |          987 |      2086 |       47 |
+| Pirate Rock     |          872 |      1904 |       46 |
+| Retro FM        |          971 |      2357 |       41 |
+| P4              |          931 |      2720 |       34 |
+| Rockklassiker   |          526 |      1972 |       27 |
+| P3              |         1060 |      3908 |       27 |
+| Bandit Rock     |          508 |      2152 |       24 |
+| NRJ             |          378 |      2057 |       18 |
+| Mix Megapol     |          372 |      2537 |       15 |
+| Lugna Favoriter |          346 |      2494 |       14 |
+| Din Gata        |          719 |      5868 |       12 |
+| Rix FM          |          279 |      2507 |       11 |
 
 ## Similarity
 
