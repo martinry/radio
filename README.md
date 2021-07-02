@@ -15,16 +15,18 @@ used.
 
 | Station         | Number of songs |
 | :-------------- | --------------: |
-| Din Gata        |            5664 |
-| P3              |            3742 |
-| P4              |            2620 |
-| Mix Megapol     |            2454 |
-| RixFM           |            2415 |
-| Lugna Favoriter |            2401 |
-| Bandit Rock     |            2073 |
-| P2              |            2006 |
-| NRJ             |            1992 |
-| Rockklassiker   |            1904 |
+| Din Gata        |            5798 |
+| P3              |            3900 |
+| P4              |            2712 |
+| Mix Megapol     |            2532 |
+| Rix FM          |            2503 |
+| Lugna Favoriter |            2489 |
+| Retro FM        |            2354 |
+| Bandit Rock     |            2149 |
+| P2              |            2074 |
+| NRJ             |            2055 |
+| Rockklassiker   |            1969 |
+| Pirate Rock     |            1947 |
 
 ## Uniqueness
 
@@ -32,16 +34,18 @@ used.
 
 | Station         | Unique songs | All songs | % unique |
 | :-------------- | -----------: | --------: | -------: |
-| P2              |          951 |      2006 |       47 |
-| P4              |          893 |      2620 |       34 |
-| Rockklassiker   |          525 |      1904 |       28 |
-| P3              |         1030 |      3742 |       28 |
-| Bandit Rock     |          506 |      2073 |       24 |
-| NRJ             |          374 |      1992 |       19 |
-| Mix Megapol     |          372 |      2454 |       15 |
-| Lugna Favoriter |          345 |      2401 |       14 |
-| RixFM           |          279 |      2415 |       12 |
-| Din Gata        |          697 |      5664 |       12 |
+| P2              |          983 |      2074 |       47 |
+| Pirate Rock     |          872 |      1947 |       45 |
+| Retro FM        |          971 |      2354 |       41 |
+| P4              |          927 |      2712 |       34 |
+| Rockklassiker   |          526 |      1969 |       27 |
+| P3              |         1057 |      3900 |       27 |
+| Bandit Rock     |          508 |      2149 |       24 |
+| NRJ             |          378 |      2055 |       18 |
+| Mix Megapol     |          372 |      2532 |       15 |
+| Lugna Favoriter |          346 |      2489 |       14 |
+| Din Gata        |          698 |      5798 |       12 |
+| Rix FM          |          279 |      2503 |       11 |
 
 ## Similarity
 
@@ -77,7 +81,7 @@ plot them as ridge plots
 
 #### Pop, miscellaneous
 
-<img src="radio_files/figure-gfm/unnamed-chunk-7-1.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-7-2.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-7-3.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-7-4.png" width="50%" />
+<img src="radio_files/figure-gfm/unnamed-chunk-7-1.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-7-2.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-7-3.png" width="50%" />
 
 #### Classical
 
@@ -86,3 +90,12 @@ plot them as ridge plots
 #### Rock
 
 ![](radio_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+Above plots show shared top 12 songs but has a bias toward stations that
+play more songs and is more repetitive. We can reduce the plots to only
+show songs that has been played at least a few times on each
+station.
+
+#### Pairwise comparisons, shared titles (inclusive)
+
+<img src="radio_files/figure-gfm/unnamed-chunk-11-1.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-11-2.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-11-3.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-11-4.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-11-5.png" width="50%" />

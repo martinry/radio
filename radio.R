@@ -8,10 +8,13 @@ library(rvest)
 library(purrr)
 library(magrittr)
 
+# Set work dir to current file location
+setwd(rstudioapi::getActiveDocumentContext()$path %>% sub(basename(.), "", .))
+
 # Fetch from onlineradiobox.com
 
-stations <- data.table(c("banditrock", "rix", "lugnafavoriter", "mixmegapol", "rockklassiker", "nrj"),
-					   c("Bandit Rock", "RixFM", "Lugna Favoriter", "Mix Megapol", "Rockklassiker", "NRJ"))
+stations <- data.table(c("retro", "piraterock", "banditrock", "rix", "lugnafavoriter", "mixmegapol", "rockklassiker", "nrj"),
+					   c("Retro FM", "Pirate Rock","Bandit Rock", "Rix FM", "Lugna Favoriter", "Mix Megapol", "Rockklassiker", "NRJ"))
 
 get_url <- function(x, i) {
 	paste0("https://onlineradiobox.com/se/", x, "/playlist/", i)
@@ -91,22 +94,24 @@ for(m in 1:programid[, .N]) {
 to_remove <- c("STOP AD BREAK", "AIS AD BREAK", "ADBREAK INSERT")
 combined <- combined[!(Title %in% to_remove)]
 
+# TBD: Mix Megapol song/artist order inconsistency
+
 # Song - Artist
-song_artist <- c("NRJ", "Rockklassiker")
+song_artist <- c("NRJ", "Rockklassiker", "Retro FM")
 combined[Station %in% song_artist]$Title %<>% sub(" - .*", "", .) %>% tolower()
 
 # Artist - Song
 combined[!(Station %in% song_artist)]$Title %<>% sub(".* - ", "", .) %>% tolower()
 
 # Write to file ----
-fwrite(combined, file = "~/radio/data/combined.csv")
+fwrite(combined, file = "data/combined.csv")
 
 # Analysis ----
 count_by_station <- combined[, .N, by = "Station"]
 
 #			  Station    N
 #	1:     Bandit Rock 2242
-#	2:           RixFM 2646
+#	2:           Rix FM 2646
 #	3: Lugna Favoriter 2586
 #	4:     Mix Megapol 2657
 #	5:   Rockklassiker 2073
@@ -153,7 +158,7 @@ library(ggthemes)
 library(RColorBrewer)
 
 ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
-	scale_fill_manual(values = brewer.pal(n = 10, name = "Set3"), name = "") +
+	scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"), name = "") +
 	xlab("Stations") + ylab("# times played same song (i.e. similarity)") +
 	coord_flip() +
 	geom_bar(stat = "identity") +
@@ -185,7 +190,7 @@ lims <- as.POSIXct(strptime(c("00:00", "23:59"),
 
 ggplot(combined, aes(x = time, y = Station, fill = Station)) + geom_density_ridges(scale = 1) +
 	scale_x_datetime(breaks = date_breaks("4 hours"), labels = date_format("%H:%M")) +
-	scale_fill_manual(values = brewer.pal(n = 10, name = "Set3"), name = "")
+	scale_fill_manual(values = brewer.pal(n = 12, name = "Set3"), name = "")
 
 joy_plot <- function(stations) {
 	combined_top <- combined[Station %in% stations]
@@ -206,9 +211,10 @@ joy_plot <- function(stations) {
 		facet_grid(~ Station)
 }
 
-joy_plot(c("P3", "P4", "NRJ", "RixFM", "Mix Megapol"))
+joy_plot(c("P3", "P4", "NRJ", "Rix FM", "Mix Megapol"))
 joy_plot(c("P3", "Din Gata"))
 joy_plot(c("NRJ", "RixFM"))
-joy_plot(c("Rockklassiker", "Bandit Rock"))
+joy_plot(c("Rockklassiker", "Bandit Rock", "Pirate Rock"))
 joy_plot(c("Lugna Favoriter", "NRJ", "P4", "Mix Megapol"))
 joy_plot("P2")
+joy_plot("Retro FM")

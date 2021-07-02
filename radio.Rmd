@@ -76,7 +76,7 @@ library(ggthemes)
 library(RColorBrewer)
 
 ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
-	scale_fill_manual(values = brewer.pal(n = 9, name = "Pastel1"), name = "") +
+	scale_fill_manual(values = brewer.pal(n = 11, name = "Set3"), name = "") +
 	xlab("Stations") + ylab("# times played same song (i.e. similarity)") +
 	coord_flip() +
 	geom_bar(stat = "identity") +
@@ -148,9 +148,8 @@ joy_plot <- function(stations) {
 #### Pop, miscellaneous
 ```{r, echo = F, fig.show="hold", out.width="50%"}
 
-joy_plot(c("P3", "P4", "NRJ", "RixFM", "Mix Megapol"))
+joy_plot(c("P3", "P4", "NRJ", "Rix FM", "Mix Megapol"))
 joy_plot(c("P3", "Din Gata"))
-joy_plot(c("NRJ", "RixFM"))
 joy_plot(c("Lugna Favoriter", "NRJ", "P4", "Mix Megapol"))
 
 ```
@@ -166,6 +165,66 @@ joy_plot("P2")
 #### Rock
 
 ```{r, echo = F}
-joy_plot(c("Rockklassiker", "Bandit Rock"))
+joy_plot(c("Rockklassiker", "Bandit Rock", "Retro FM", "Pirate Rock"))
+
+```
+
+
+```{r, echo = F, fig.show="hold", out.width="50%"}
+combined$time <- as.POSIXct(strptime(combined$Timestamp, format = "%H:%M")) 
+
+library(ggridges)
+library(scales)
+
+lims <- as.POSIXct(strptime(c("00:00", "23:59"), 
+							format = "%H:%M"))
+
+joy_plot2 <- function(station1, station2) {
+	# For both stations, find most popular songs
+	combined_top1 <- combined[Station == station1, .N, by = "Title"]
+	combined_top2 <- combined[Station == station2, .N, by = "Title"]
+	
+	# We arbitrarily decide to keep songs played more than three times
+	combined_top1 <- combined_top1[N > 2]
+	combined_top2 <- combined_top2[N > 2]
+	
+	combined_top1 <- combined_top1[order(N, decreasing = T)]
+	
+	# Check every title from station 1 to see if it's also among popular songs in station 2
+	combined_top_shared <- combined_top1[Title %in% combined_top2$Title]
+	
+	combined_top_shared <- combined[(Title %in% combined_top_shared$Title) & (Station %in% c(station1, station2))]
+	
+	combined_top_shared <- combined_top_shared[, .N, by = "Title"]
+	combined_top_shared <- combined_top_shared[order(N, decreasing = T)][1:12]
+	
+	combined_top_shared <- combined_top_shared[Title %in% combined_top_shared$Title]
+	
+	combined_top_shared <- combined[(Title %in% combined_top_shared$Title) & (Station %in% c(station1, station2))]
+	
+	ggplot(combined_top_shared, aes(x = time, y = Title, fill = Title, height = ..scaled..)) +
+		geom_density_ridges(stat = "density", trim = F, scale = 0.6) +
+		scale_x_datetime(breaks = date_breaks("4 hours"), labels = date_format("%H:%M"), limits = lims) +
+		scale_fill_manual(values = brewer.pal(n = 12, name = "Set3"), name = "") +
+		
+		guides(fill = F) +
+		theme_clean() +
+		theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+		facet_grid(~ Station)
+}
+
+```
+
+Above plots show shared top 12 songs but has a bias toward stations that play more songs and is more repetitive. We can reduce the plots to only show songs that has been played at least a few times on each station.
+
+#### Pairwise comparisons, shared titles (inclusive)
+
+```{r, echo = F, out.width="50%"}
+joy_plot2("Retro FM", "Lugna Favoriter")
+joy_plot2(station1 = "P3", station2 =  "P4")
+joy_plot2(station1 = "P2", station2 =  "P4")
+joy_plot2(station1 = "Rockklassiker", station2 =  "Bandit Rock")
+joy_plot2(station1 = "Rockklassiker", station2 =  "Retro FM")
+
 
 ```
