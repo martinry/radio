@@ -91,7 +91,7 @@ for(m in 1:programid[, .N]) {
 
 # Clean up
 
-to_remove <- c("STOP AD BREAK", "AIS AD BREAK", "ADBREAK INSERT")
+to_remove <- c("STOP AD BREAK", "AIS AD BREAK", "ADBREAK INSERT", '<!doctype html public ""-//ietf//dtd html 2.0//en"">')
 combined <- combined[!(Title %in% to_remove)]
 
 # TBD: Mix Megapol song/artist order inconsistency

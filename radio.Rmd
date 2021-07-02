@@ -11,6 +11,7 @@ library(data.table)
 library(dplyr)
 
 ```
+Last updated on: `r Sys.time()`
 
 See **radio.R** for full script including data scraping. Presented data is from past 7 days (July 2nd). Song identity is assumed based on name - different songs with same name will be counted as the same. Scraped data may be incorrect due to spelling variants, missing data, incomplete sources etc. Only publicly available data is used.
 
@@ -223,8 +224,10 @@ Above plots show shared top 12 songs but has a bias toward stations that play mo
 joy_plot2("Retro FM", "Lugna Favoriter")
 joy_plot2(station1 = "P3", station2 =  "P4")
 joy_plot2(station1 = "P2", station2 =  "P4")
+joy_plot2(station1 = "P3", station2 =  "Din Gata")
 joy_plot2(station1 = "Rockklassiker", station2 =  "Bandit Rock")
 joy_plot2(station1 = "Rockklassiker", station2 =  "Retro FM")
+
 
 
 ```
