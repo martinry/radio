@@ -3,42 +3,45 @@ Similarity, uniqueness of Swedish radio stations
 Martin Rydén
 
 See **radio.R** for full script including data scraping. Presented data
-is from past 7 days (July
-1st).
+is from past 7 days (July 2nd). Song identity is assumed based on name -
+different songs with same name will be counted as the same. Scraped data
+may be incorrect due to spelling variants, missing data, incomplete
+sources etc. Only publicly available data is
+used.
 
 ## How many songs were played?
 
-#### Total number of songs (including duplicates) played between 2021-06-25 and 2021-07-01
+#### Total number of songs (including duplicates) played between 2021-06-26 and 2021-07-02
 
-| Station        | Number of songs |
-| :------------- | --------------: |
-| Din Gata       |            2999 |
-| mixmegapol     |            2615 |
-| rix            |            2599 |
-| lugnafavoriter |            2545 |
-| banditrock     |            2205 |
-| nrj            |            2054 |
-| P3             |            2044 |
-| rockklassiker  |            2038 |
-| P4             |            1468 |
-| P2             |            1130 |
+| Station         | Number of songs |
+| :-------------- | --------------: |
+| Din Gata        |            5376 |
+| P3              |            3548 |
+| P4              |            2452 |
+| Mix Megapol     |            2319 |
+| RixFM           |            2295 |
+| Lugna Favoriter |            2263 |
+| Bandit Rock     |            1954 |
+| P2              |            1910 |
+| NRJ             |            1883 |
+| Rockklassiker   |            1803 |
 
 ## Uniqueness
 
 #### Percentage of unique songs (within stations) – low % means high repetitiveness
 
-| Station        | Unique songs | All songs | % unique |
-| :------------- | -----------: | --------: | -------: |
-| P2             |         1068 |      1130 |       95 |
-| P4             |          999 |      1468 |       68 |
-| P3             |         1108 |      2044 |       54 |
-| rockklassiker  |          521 |      2038 |       26 |
-| Din Gata       |          717 |      2999 |       24 |
-| banditrock     |          509 |      2205 |       23 |
-| nrj            |          385 |      2054 |       19 |
-| lugnafavoriter |          346 |      2545 |       14 |
-| mixmegapol     |          375 |      2615 |       14 |
-| rix            |          293 |      2599 |       11 |
+| Station         | Unique songs | All songs | % unique |
+| :-------------- | -----------: | --------: | -------: |
+| P2              |          908 |      1910 |       48 |
+| P4              |          848 |      2452 |       35 |
+| Rockklassiker   |          522 |      1803 |       29 |
+| P3              |          996 |      3548 |       28 |
+| Bandit Rock     |          499 |      1954 |       26 |
+| NRJ             |          366 |      1883 |       19 |
+| Mix Megapol     |          370 |      2319 |       16 |
+| Lugna Favoriter |          345 |      2263 |       15 |
+| Din Gata        |          693 |      5376 |       13 |
+| RixFM           |          278 |      2295 |       12 |
 
 ## Similarity
 
@@ -52,7 +55,7 @@ P4.](radio_files/figure-gfm/unnamed-chunk-4-1.png)
 
 <div class="figure">
 
-<img src="radio_files/figure-gfm/unnamed-chunk-5-1.png" alt="Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity." width="40%" /><img src="radio_files/figure-gfm/unnamed-chunk-5-2.png" alt="Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity." width="40%" /><img src="radio_files/figure-gfm/unnamed-chunk-5-3.png" alt="Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity." width="40%" />
+<img src="radio_files/figure-gfm/unnamed-chunk-5-1.png" alt="Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity." width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-5-2.png" alt="Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity." width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-5-3.png" alt="Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity." width="50%" />
 
 <p class="caption">
 
@@ -63,3 +66,13 @@ dissimilarity.
 </p>
 
 </div>
+
+## Timepoint analysis
+
+#### Are certain songs played at a certain time?
+
+For each group of stations, we investigate their shared top 12 songs and
+plot them as ridge plots
+(density/24h).
+
+<img src="radio_files/figure-gfm/unnamed-chunk-6-1.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-6-2.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-6-3.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-6-4.png" width="50%" /><img src="radio_files/figure-gfm/unnamed-chunk-6-5.png" width="50%" />

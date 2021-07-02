@@ -12,14 +12,14 @@ library(dplyr)
 
 ```
 
-See **radio.R** for full script including data scraping. Presented data is from past 7 days (July 1st).
+See **radio.R** for full script including data scraping. Presented data is from past 7 days (July 2nd). Song identity is assumed based on name - different songs with same name will be counted as the same. Scraped data may be incorrect due to spelling variants, missing data, incomplete sources etc. Only publicly available data is used.
 
 ```{r, echo = F}
 combined <- fread("data/combined.csv")
 ```
 
 ## How many songs were played?
-#### Total number of songs (including duplicates) played between 2021-06-25 and 2021-07-01
+#### Total number of songs (including duplicates) played between 2021-06-26 and 2021-07-02
 
 ```{r, echo = F}
 count_by_station <- combined[, .N, by = "Station"]
@@ -31,7 +31,7 @@ count_by_station[order(`Number of songs`, decreasing = T)] %>% knitr::kable()
 #### Percentage of unique songs (within stations) -- low % means high repetitiveness
 
 ```{r, echo = F}
-unique_by_station <- unique(combined, by = c("Station", "Song"))
+unique_by_station <- unique(combined, by = c("Station", "Title"))
 
 unique_by_station <- unique_by_station[, .N, by = "Station"]
 
@@ -50,7 +50,7 @@ unique_by_station[order(`% unique`, decreasing = T)] %>% knitr::kable()
 ```{r, echo = F, fig.width=8, fig.height=9, fig.cap = "Counts of same song being played between sets of stations, highest degree of similarity between P3 and P4."}
 
 # Group songs by Station
-songs_by_group <- combined[,list(list(unique(Station))), by="Song"]
+songs_by_group <- combined[,list(list(unique(Station))), by="Title"]
 
 # Which songs have been played by more than one station?
 songs_by_group <- songs_by_group[lengths(songs_by_group$V1) > 1]
@@ -89,11 +89,11 @@ ggplot(combsnew, aes(x = V1, y = V2, fill = setby)) +
 
 ## Similarity heatmap
 
-```{r, echo = F, message = F, warnings = F, error = F, results = "hide", message = "F", fig.show="hold", out.width="40%", fig.cap = "Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity."}
+```{r, echo = F, message = F, warnings = F, error = F, results = "hide", message = "F", fig.show="hold", out.width="50%", fig.cap = "Similarity heatmap based on counts of same song played between sets of radio stations. Log-transformed and centered plots to emphasize dissimilarity."}
 
 library(pheatmap)
 
-M <- reshape2::dcast(combsDF, V2~V1, value.var="freq")
+M <- reshape2::dcast(combsDF, V2~V1, value.var="freq", drop = F)
 
 rownames(M) <- M$V2
 M <- M[, 2:ncol(M)]
@@ -105,5 +105,48 @@ pheatmap(M, cluster_rows=F, cluster_cols=F, na_col="white", main = "Raw counts")
 pheatmap(log10(M+1), cluster_rows=F, cluster_cols=F, na_col="white", main = "log10 counts")
 pheatmap(scale(M, center = T, scale = F), cluster_rows=F, cluster_cols=F, na_col="white", main = "Centered counts")
 
+
+```
+
+
+
+## Timepoint analysis
+#### Are certain songs played at a certain time?
+
+For each group of stations, we investigate their shared top 12 songs and plot them as ridge plots (density/24h).
+
+```{r, echo = F, fig.show="hold", out.width="50%"}
+combined$time <- as.POSIXct(strptime(combined$Timestamp, format = "%H:%M")) 
+
+library(ggridges)
+library(scales)
+
+lims <- as.POSIXct(strptime(c("00:00", "23:59"), 
+							format = "%H:%M"))
+
+joy_plot <- function(stations) {
+	combined_top <- combined[Station %in% stations]
+	combined_top_titles <- combined_top[, .N, by = "Title"]
+	combined_top_titles <- combined_top_titles[order(N, decreasing = T)][1:12]
+	combined_top <- combined_top[Title %in% combined_top_titles$Title]
+	combined_top$Title <- as.factor(combined_top$Title)
+	combined_top$Station <- as.factor(combined_top$Station)
+	
+	ggplot(combined_top, aes(x = time, y = Title, fill = Title, height = ..scaled..)) +
+		geom_density_ridges(stat = "density", trim = F, scale = 0.6) +
+		scale_x_datetime(breaks = date_breaks("4 hours"), labels = date_format("%H:%M"), limits = lims) +
+		scale_fill_manual(values = brewer.pal(n = 12, name = "Set3"), name = "") +
+		
+		guides(fill = F) +
+		theme_clean() +
+		theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+		facet_grid(~ Station)
+}
+
+joy_plot(c("P3", "P4", "NRJ", "RixFM", "Mix Megapol"))
+joy_plot(c("P3", "Din Gata"))
+joy_plot(c("NRJ", "RixFM"))
+joy_plot(c("Rockklassiker", "Bandit Rock"))
+joy_plot(c("Lugna Favoriter", "NRJ", "P4", "Mix Megapol"))
 
 ```
